@@ -67,7 +67,7 @@ const Pizza = ({ pizza }) => {
 }
 
 const Main = () => {
-  const data = pizzas.map(pizza => <Pizza pizza={pizza} />)
+  const data = pizzas.map(pizza => <Pizza key={pizza.id} pizza={pizza} />)
 
   return (<React.Fragment>
     {data}
