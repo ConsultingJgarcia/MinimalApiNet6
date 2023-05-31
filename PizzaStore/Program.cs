@@ -28,7 +28,7 @@ app.UseSwaggerUI(c =>
    });
 
 
-
+//Get all
 app.MapGet("/pizzas", async (PizzaDb db) => await db.Pizzas.ToListAsync());
 
 app.MapPost("/pizza", async (PizzaDb db, Pizza pizza) =>
@@ -38,11 +38,33 @@ app.MapPost("/pizza", async (PizzaDb db, Pizza pizza) =>
     return Results.Created($"/pizza/{pizza.Id}", pizza);
 });
 
-// app.MapGet("/pizzas/{id}", (int id) => PizzaDB.GetPizza(id));
 
-// app.MapPost("/pizzas", (Pizza pizza) => PizzaDB.CreatePizza(pizza));
-// app.MapPut("/pizzas", (Pizza pizza) => PizzaDB.UpdatePizza(pizza));
-// app.MapDelete("/pizzas/{id}", (int id) => PizzaDB.RemovePizza(id));
+//Insert element
+app.MapGet("/pizza/{id}", async (PizzaDb db, int id) => await db.Pizzas.FindAsync(id));
+
+//update element
+app.MapPut("/pizza/{id}", async (PizzaDb db, Pizza updatepizza, int id) =>
+{
+      var pizza = await db.Pizzas.FindAsync(id);
+      if (pizza is null) return Results.NotFound();
+      pizza.Name = updatepizza.Name;
+      pizza.Description = updatepizza.Description;
+      await db.SaveChangesAsync();
+      return Results.NoContent();
+});
+
+//Delete element
+app.MapDelete("/pizza/{id}", async (PizzaDb db, int id) =>
+{
+   var pizza = await db.Pizzas.FindAsync(id);
+   if (pizza is null)
+   {
+      return Results.NotFound();
+   }
+   db.Pizzas.Remove(pizza);
+   await db.SaveChangesAsync();
+   return Results.Ok();
+});
 
 
 app.Run();
