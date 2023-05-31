@@ -6,7 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
    {
-       c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todo API", Description = "Keep track of your tasks", Version = "v1" });
+       c.SwaggerDoc("v1", new OpenApiInfo {
+         Title = "PizzaStore API",
+         Description = "Making the Pizzas you love",
+         Version = "v1" });
    });
 
 
@@ -15,7 +18,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
    {
-     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo API V1");
+     c.SwaggerEndpoint("/swagger/v1/swagger.json", "PizzaStore API V1");
      c.RoutePrefix = string.Empty; // esto se usa para no tener que colocar en la url swagger
    });
 
